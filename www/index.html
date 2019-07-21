@@ -1,0 +1,126 @@
+<!-- api key = Client-ID 7711bc539737c6e -->
+
+<!-- secret = d46ea38f81a5552c377863c660a82ef03b0da242 -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Geostar|Quicksand&display=swap"
+      rel="stylesheet"
+    />
+    <title>Document</title>
+    <!-- Compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>memes</title>
+    <style>
+      /* font-family: 'Geostar', cursive;
+       font-family: 'Quicksand', sans-serif; */
+      body {
+        background-color: #333;
+        color: white;
+        font-family: "Quicksand", sans-serif;
+        text-align: center;
+      }
+      .title {
+        font-family: "Geostar", cursive;
+        color: orange;
+      }
+      .img {
+        width: 100%;
+        border-radius:3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <template>
+        <nav class="amber accent-4">
+          <div class="nav-wrapper">
+            <form @submit.prevent="onSearch">
+              <div class="input-field">
+                <input id="search" v-model="input" type="search" required />
+                <label class="label-icon" for="search"
+                  ><i class="material-icons">search</i></label
+                >
+                <i class="material-icons">close</i>
+              </div>
+            </form>
+          </div>
+        </nav>
+        <h5 class="title">{{ message }}</h5>
+        
+        <div>
+          <div class="row" >
+            <div class="col s6" v-for="image in imagesArray">
+                   
+              <img class="img" :src="image.link" alt="" />
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <script>
+      var app = new Vue({
+        el: "#app",
+        data: {
+          message: "image search",
+          input: "",
+          imagesArray: []
+        },
+        methods: {
+          onSearch() {
+            axios({
+              method: "get",
+              async: true,
+             crossDomain: true,
+              url:
+                "https://api.imgur.com/3/gallery/search?q=" +
+                this.input +
+                "&q_type=png",
+              headers: {
+                Authorization: "Client-ID 7711bc539737c6e"
+              }
+            })
+              .then(response => {
+                console.log(response.data.data);
+                let images = response.data.data;
+                let id = 1;
+                images.forEach(x => {
+                  let tags = x.tags.map(x => x.name);
+
+                  this.imagesArray.push({
+                    id: id,
+                    title: x.title,
+                    link: x.link,
+                    tags: tags
+                  });
+                  id++;
+                });
+                // console.log(this.imagesArray);
+              })
+              .catch(function(error) {
+                console.log(error);
+              });
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
