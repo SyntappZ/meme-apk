@@ -41,10 +41,24 @@
         font-family: "Geostar", cursive;
         color: orange;
       }
+      .wrap {
+        width:100%;
+        display: flex;
+        justify-content: space-around;
+       
+        min-height: 300px;
+      }
+      .imageBox {
+      
+       width:45%;
+      min-height: 300px;
+      }
+      
       .img {
         width: 100%;
-        border-radius:3px;
+        border-radius: 3px;
       }
+     
     </style>
   </head>
   <body>
@@ -65,14 +79,24 @@
         </nav>
         <h5 class="title">{{ message }}</h5>
         
-        <div>
-          <div class="row" >
-            <div class="col s6" v-for="image in images">
-                   
-              <img class="img" :src="image.link" alt="" />
+        <div class="wrap">
+          <div class="imageBox" >
+           <div v-for="image in images">
+            <img class="img" :src="image.link" alt="" />
+           </div>
+              
+          
+          </div>
+          <div class="imageBox">
+            <div v-for="image2 in images2">
+              <img class="img" :src="image2.link" alt="" />
             </div>
           </div>
         </div>
+       
+        
+         
+        
       </template>
     </div>
 
@@ -83,23 +107,26 @@
           message: "image search",
           input: "",
           imagesArray: [],
-          images: []
+          images: [],
+          imagesArray2: [],
+          images2: []
         },
         methods: {
           onSearch() {
-            
+            this.images = []
+            this.images2 = []
+            this.imagesArray = []
+            this.imagesArray2 = []
             axios({
               method: "get",
               url:
-                "https://api.imgur.com/3/gallery/search?q=" +
-                this.input +
-                "&q_type=png",
+                "https://api.imgur.com/3/gallery/search/page1/top?q=" +
+                this.input,
               headers: {
                 Authorization: "Client-ID 7711bc539737c6e"
               }
             })
               .then(response => {
-               
                 let images = response.data.data;
                 let id = 1;
                 images.forEach(x => {
@@ -113,31 +140,67 @@
                   });
                   id++;
                 });
-                for(image of this.imagesArray) {
-                 console.log(image.link)
-                  let reg = new RegExp(/.png$/)
+                
+                for (image of this.imagesArray) {
+                
+                  let reg = new RegExp(/.png$/);
 
-                  let linkCheck = reg.test(image.link)
-                  console.log(linkCheck)
-                 if(linkCheck) {
-                  this.images.push(image)
-                 }
-              }
-                 console.log(this.images);
+                  let linkCheck = reg.test(image.link);
+                 
+                  if (linkCheck) {
+                    this.images.push(image);
+                  }
+                }
+                
               })
               .catch(function(error) {
                 console.log(error);
               });
-          },
-          filterArray() {
-           
-              
-            }
-          
-        },
-        computed: {
-           
+
+              axios({
+              method: "get",
+              url:
+                "https://api.imgur.com/3/gallery/search/page2/top?q=" +
+                this.input,
+              headers: {
+                Authorization: "Client-ID 7711bc539737c6e"
+              }
+            })
+              .then(response => {
+                let images = response.data.data;
+                let id = 1;
+                
+                images.forEach(x => {
+                  let tags = x.tags.map(x => x.name);
+
+                  this.imagesArray2.push({
+                    id: id,
+                    title: x.title,
+                    link: x.link,
+                    tags: tags
+                  });
+                  id++;
+                });
+               
+                for (image of this.imagesArray2) {
+                
+                  let reg = new RegExp(/.jpg$/);
+
+                  let linkCheck = reg.test(image.link);
+                 
+                  if (linkCheck) {
+                    this.images2.push(image);
+                  }
+                }
+               
+              })
+              .catch(function(error) {
+                console.log(error);
+              });
+              this.input = ''
           }
+        },
+        computed: {}
       });
     </script>
   </body>
