@@ -67,27 +67,26 @@
         background-color: #424242;
       }
       .tagBox {
-        width:100%;
-     
+        width: 100%;
         display: flex;
-        align-items: center;
-        justify-content: space-around;
-        padding: 10px 0 7px 0;
+        
+        
+        padding: 10px 2px 7px 2px;
+        overflow-x: auto;
+       
       }
       .imageTop {
-        width:100%;
+        width: 100%;
         height: 70px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-right:20px;
-        overflow-x: auto;
-
+        padding-right: 20px;
+       
       }
       .backBtn {
-       cursor: pointer;
-        width:50px;
-        
+        cursor: pointer;
+        width: 50px;
       }
     </style>
   </head>
@@ -120,7 +119,7 @@
           </div>
         </nav>
         <h5 class="title">{{ message }}</h5>
-        
+
         <div v-if="imageOpen == false" class="wrap">
           <div class="imageBox">
             <div v-for="image in images" :key="image.id">
@@ -156,9 +155,9 @@
             <div class="col s12 m12">
               <div class="imageTop">
                 <div class="backBtn waves-effect" @click="closeImage">
-                    <i class="small material-icons">chevron_left</i>
+                  <i class="small material-icons">chevron_left</i>
                 </div>
-               
+
                 <p class="title">{{ title }}</p>
               </div>
               <div class="card">
@@ -168,16 +167,16 @@
                 <div class="card-content grey darken-3">
                   <p>{{ desciption }}</p>
                 </div>
-                <div  v-if="tags.length > 0" class="tagBox s12 m12">
-                    <div  v-for="tag in tags">
-                        <div class="chip orange white-text">
-                          {{ tag }}
-                        </div>
-                      </div>
+                <div v-if="tags.length > 0" class="tagBox s12 m12">
+                  <div v-for="tag in tags">
+                    <div class="chip orange white-text">
+                      {{ tag }}
+                    </div>
+                  </div>
                 </div>
-              
+
                 <div class="card-action">
-                    <a href="#" download>Download</a>
+                  <a :href="url" download>Download</a>
                 </div>
               </div>
             </div>
@@ -205,18 +204,17 @@
           desciption: "",
           tags: []
         },
-        mounted() {
-         
-        },
+        mounted() {},
         methods: {
           toTop() {},
           onSearch() {
-            console.log('searching...')
+            this.images = [];
+            this.images2 = [];
             this.searchTitle();
-            this.tempTitle = []
-           
-            //this.all = [];
-            this.tempTitle.push(this.input)
+            this.tempTitle = [];
+
+            //console.log(this.all)
+            this.tempTitle.push(this.input);
             for (let i = 1; i <= 3; i++) {
               axios({
                 method: "get",
@@ -229,12 +227,10 @@
               })
                 .then(response => {
                   let images = response.data.data;
-                 
+
                   images.forEach(x => {
-                    
-                    
                     let url = "";
-                    
+
                     let reg = new RegExp(/.png$|.jpg$|.gif$/);
 
                     let linkCheck = reg.test(x.link);
@@ -243,8 +239,8 @@
                     } else {
                       url = x.images[0].link;
                     }
-                    
-                   let tags = x.tags.map(x => x.name);
+
+                    let tags = x.tags.map(x => x.name);
 
                     this.all.push({
                       id: x.id,
@@ -257,14 +253,13 @@
                   });
                 })
                 .then(() => {
-                 
                   this.splitArrays(this.n++);
                 })
                 .catch(function(error) {
                   console.log(error);
                 });
             }
-     // console.log(this.all)
+
             this.input = "";
           },
           splitArrays(n) {
@@ -273,7 +268,9 @@
 
               this.images = this.all.slice(0, halfWay);
               this.images2 = this.all.slice(halfWay, this.all.length);
-              console.log(this.images)
+
+              this.all = [];
+              this.n = 0;
             }
           },
           openImage(desc, title, link, tags) {
@@ -282,11 +279,9 @@
             this.title = title;
             this.desciption = desc;
             this.tags = tags;
-           
           },
           closeImage() {
-            this.imageOpen = false
-            
+            this.imageOpen = false;
           },
           imageLoaded() {
             this.notLoaded = true;
