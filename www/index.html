@@ -13,13 +13,13 @@
       rel="stylesheet"
     />
     <title>Document</title>
-    <!-- Compiled and minified CSS -->
+    
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
     />
 
-    <!-- Compiled and minified JavaScript -->
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link
@@ -29,8 +29,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>memes</title>
     <style>
-      /* font-family: 'Geostar', cursive;
-       font-family: 'Quicksand', sans-serif; */
+     
       body {
         background-color: #424242;
         color: white;
@@ -69,11 +68,9 @@
       .tagBox {
         width: 100%;
         display: flex;
-        
-        
+
         padding: 10px 2px 7px 2px;
         overflow-x: auto;
-       
       }
       .imageTop {
         width: 100%;
@@ -82,7 +79,6 @@
         justify-content: space-between;
         align-items: center;
         padding-right: 20px;
-       
       }
       .backBtn {
         cursor: pointer;
@@ -125,8 +121,8 @@
             <div v-for="image in images" :key="image.id">
               <img
                 @click="openImage(image.desc, image.title, image.link, image.tags)"
-                class="img"
-                :src="image.link"
+                class="img lazyload"
+                :data-src="image.link"
                 alt=""
               />
             </div>
@@ -136,8 +132,8 @@
             <div v-for="image in images2" :key="image.id">
               <img
                 @click="openImage(image.desc, image.title, image.link, image.tags)"
-                class="img"
-                :src="image.link"
+                class="img lazyload"
+                :data-src="image.link"
                 alt=""
               />
             </div>
@@ -184,7 +180,7 @@
         </div>
       </template>
     </div>
-
+    <script src="js/lazyLoad.js" async=""></script>
     <script>
       var app = new Vue({
         el: "#app",
@@ -213,7 +209,7 @@
             this.searchTitle();
             this.tempTitle = [];
 
-            //console.log(this.all)
+           
             this.tempTitle.push(this.input);
             for (let i = 1; i <= 3; i++) {
               axios({
