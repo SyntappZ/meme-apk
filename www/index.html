@@ -32,7 +32,7 @@
       /* font-family: 'Geostar', cursive;
        font-family: 'Quicksand', sans-serif; */
       body {
-        background-color: #333;
+        background-color: #424242;
         color: white;
         font-family: "Quicksand", sans-serif;
         text-align: center;
@@ -42,26 +42,68 @@
         color: orange;
       }
       .wrap {
-        width:100%;
+        width: 100%;
         display: flex;
         justify-content: space-around;
-       
+
         min-height: 300px;
       }
       .imageBox {
-      
-       width:45%;
-      min-height: 300px;
+        width: 45%;
+        min-height: 300px;
       }
-      
+
       .img {
         width: 100%;
-        border-radius: 3px;
+        border-radius: 5px;
       }
+      #imgModel {
+        width: 100%;
+        min-height: 100vh;
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        left: 0;
+        background-color: #424242;
+      }
+      .tagBox {
+        width:100%;
      
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding: 10px 0 7px 0;
+      }
+      .imageTop {
+        width:100%;
+        height: 70px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-right:20px;
+        overflow-x: auto;
+
+      }
+      .backBtn {
+       cursor: pointer;
+        width:50px;
+        
+      }
     </style>
   </head>
   <body>
+    <!-- loader-----------
+      <div v-if="image.loaded" class="preloader-wrapper active">
+          <div class="spinner-layer spinner-red-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div><div class="gap-patch">
+              <div class="circle"></div>
+            </div><div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div> -->
     <div id="app">
       <template>
         <nav class="amber accent-4">
@@ -79,24 +121,68 @@
         </nav>
         <h5 class="title">{{ message }}</h5>
         
-        <div class="wrap">
-          <div class="imageBox" >
-           <div v-for="image in images">
-            <img class="img" :src="image.link" alt="" />
-           </div>
-              
-          
-          </div>
+        <div v-if="imageOpen == false" class="wrap">
           <div class="imageBox">
-            <div v-for="image2 in images2">
-              <img class="img" :src="image2.link" alt="" />
+            <div v-for="image in images" :key="image.id">
+              <img
+                @click="openImage(image.desc, image.title, image.link, image.tags)"
+                class="img"
+                :src="image.link"
+                alt=""
+              />
+            </div>
+          </div>
+
+          <div class="imageBox">
+            <div v-for="image in images2" :key="image.id">
+              <img
+                @click="openImage(image.desc, image.title, image.link, image.tags)"
+                class="img"
+                :src="image.link"
+                alt=""
+              />
             </div>
           </div>
         </div>
-       
-        
-         
-        
+        <!-- <div v-if="show" @click="toTop" class="fixed-action-btn">
+          <a class="btn-floating btn-large orange">
+            <i class="large material-icons black-text">arrow_upward</i>
+          </a>
+        </div> -->
+      </template>
+      <template>
+        <div v-if="imageOpen" id="imgModel">
+          <div class="row">
+            <div class="col s12 m12">
+              <div class="imageTop">
+                <div class="backBtn waves-effect" @click="closeImage">
+                    <i class="small material-icons">chevron_left</i>
+                </div>
+               
+                <p class="title">{{ title }}</p>
+              </div>
+              <div class="card">
+                <div class="card-image">
+                  <img class="img" :src="url" />
+                </div>
+                <div class="card-content grey darken-3">
+                  <p>{{ desciption }}</p>
+                </div>
+                <div  v-if="tags.length > 0" class="tagBox s12 m12">
+                    <div  v-for="tag in tags">
+                        <div class="chip orange white-text">
+                          {{ tag }}
+                        </div>
+                      </div>
+                </div>
+              
+                <div class="card-action">
+                    <a href="#" download>Download</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </template>
     </div>
 
@@ -106,101 +192,120 @@
         data: {
           message: "image search",
           input: "",
-          imagesArray: [],
+          tempTitle: [],
+          all: [],
+          imageOpen: false,
+          n: 0,
+          scrolling: 0,
           images: [],
-          imagesArray2: [],
-          images2: []
+          notLoaded: true,
+          images2: [],
+          url: "",
+          title: "",
+          desciption: "",
+          tags: []
+        },
+        mounted() {
+         
         },
         methods: {
+          toTop() {},
           onSearch() {
-            this.images = []
-            this.images2 = []
-            this.imagesArray = []
-            this.imagesArray2 = []
-            axios({
-              method: "get",
-              url:
-                "https://api.imgur.com/3/gallery/search/page1/top?q=" +
-                this.input,
-              headers: {
-                Authorization: "Client-ID 7711bc539737c6e"
-              }
-            })
-              .then(response => {
-                let images = response.data.data;
-                let id = 1;
-                images.forEach(x => {
-                  let tags = x.tags.map(x => x.name);
-
-                  this.imagesArray.push({
-                    id: id,
-                    title: x.title,
-                    link: x.link,
-                    tags: tags
-                  });
-                  id++;
-                });
-                
-                for (image of this.imagesArray) {
-                
-                  let reg = new RegExp(/.png$/);
-
-                  let linkCheck = reg.test(image.link);
-                 
-                  if (linkCheck) {
-                    this.images.push(image);
-                  }
-                }
-                
-              })
-              .catch(function(error) {
-                console.log(error);
-              });
-
+            console.log('searching...')
+            this.searchTitle();
+            this.tempTitle = []
+           
+            //this.all = [];
+            this.tempTitle.push(this.input)
+            for (let i = 1; i <= 3; i++) {
               axios({
-              method: "get",
-              url:
-                "https://api.imgur.com/3/gallery/search/page2/top?q=" +
-                this.input,
-              headers: {
-                Authorization: "Client-ID 7711bc539737c6e"
-              }
-            })
-              .then(response => {
-                let images = response.data.data;
-                let id = 1;
-                
-                images.forEach(x => {
-                  let tags = x.tags.map(x => x.name);
-
-                  this.imagesArray2.push({
-                    id: id,
-                    title: x.title,
-                    link: x.link,
-                    tags: tags
-                  });
-                  id++;
-                });
-               
-                for (image of this.imagesArray2) {
-                
-                  let reg = new RegExp(/.jpg$/);
-
-                  let linkCheck = reg.test(image.link);
-                 
-                  if (linkCheck) {
-                    this.images2.push(image);
-                  }
+                method: "get",
+                url:
+                  `https://api.imgur.com/3/gallery/search/top/${i}?q=` +
+                  this.input,
+                headers: {
+                  Authorization: "Client-ID 7711bc539737c6e"
                 }
-               
               })
-              .catch(function(error) {
-                console.log(error);
-              });
-              this.input = ''
+                .then(response => {
+                  let images = response.data.data;
+                 
+                  images.forEach(x => {
+                    
+                    
+                    let url = "";
+                    
+                    let reg = new RegExp(/.png$|.jpg$|.gif$/);
+
+                    let linkCheck = reg.test(x.link);
+                    if (linkCheck) {
+                      url = x.link;
+                    } else {
+                      url = x.images[0].link;
+                    }
+                    
+                   let tags = x.tags.map(x => x.name);
+
+                    this.all.push({
+                      id: x.id,
+                      desc: x.title,
+                      title: this.tempTitle[0],
+                      link: url,
+                      tags: tags,
+                      loaded: false
+                    });
+                  });
+                })
+                .then(() => {
+                 
+                  this.splitArrays(this.n++);
+                })
+                .catch(function(error) {
+                  console.log(error);
+                });
+            }
+     // console.log(this.all)
+            this.input = "";
+          },
+          splitArrays(n) {
+            if (n == 2) {
+              let halfWay = Math.floor(this.all.length / 2);
+
+              this.images = this.all.slice(0, halfWay);
+              this.images2 = this.all.slice(halfWay, this.all.length);
+              console.log(this.images)
+            }
+          },
+          openImage(desc, title, link, tags) {
+            this.imageOpen = true;
+            this.url = link;
+            this.title = title;
+            this.desciption = desc;
+            this.tags = tags;
+           
+          },
+          closeImage() {
+            this.imageOpen = false
+            
+          },
+          imageLoaded() {
+            this.notLoaded = true;
+          },
+          searchTitle() {
+            this.message = this.input;
           }
         },
-        computed: {}
+        computed: {
+          show() {
+            window.addEventListener("scroll", function(e) {
+              if (this.scrollY > 500) {
+                return true;
+              } else {
+                return false;
+              }
+            });
+          }
+        }
       });
     </script>
   </body>
