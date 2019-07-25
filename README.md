@@ -11,6 +11,7 @@ i tried adding file transfer plugin for cordova but still not working so adding 
 
 - search images/gifs
 - share images/gifs to social media apps
+- image lazy loading
 
 
 ## tech used
