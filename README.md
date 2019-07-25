@@ -20,6 +20,7 @@ i tried adding file transfer plugin for cordova but still not working so adding 
  - vue
  - materialize css
  - cordova
+ - axios
  - imgur API
  
  ## known bugs/improvements
