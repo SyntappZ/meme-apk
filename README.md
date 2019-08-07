@@ -24,7 +24,7 @@ i tried adding file transfer plugin for cordova but still not working so adding 
  - axios
  - imgur API
  
- ## known bugs/improvements
+ ## future improvements
  
  - makle lazy loading come from the api server instead of array
  - make the images/gifs shareable
