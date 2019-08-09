@@ -121,8 +121,8 @@
             <div v-for="image in images" :key="image.id">
               <img
                 @click="openImage(image.desc, image.title, image.link, image.tags)"
-                class="img"
-                :src="image.link"
+                class="img lazyload"
+                :data-src="image.link"
                 alt=""
               />
             </div>
@@ -132,8 +132,8 @@
             <div v-for="image in images2" :key="image.id">
               <img
                 @click="openImage(image.desc, image.title, image.link, image.tags)"
-                class="img"
-                :src="image.link"
+                class="img lazyload"
+                :data-src="image.link"
                 alt=""
               />
             </div>
@@ -180,7 +180,7 @@
         </div>
       </template>
     </div>
-
+    <script src="js/lazyLoad.js" async=""></script>
     <script>
       var app = new Vue({
         el: "#app",
