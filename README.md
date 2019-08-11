@@ -6,7 +6,7 @@
 Originaly i wanted to make this app download the images to the mobile but i just cant find good way of doing this at the moment, i finally got download working by drawing the images to a canvas then downloading the canvas but this only works in browser and not apk so
 i tried adding file transfer plugin for cordova but still not working so adding a download feature will have to wait.
 
-<b>EDIT:</b> now that i have the functionality working i am going to start from fresh and do a proper framework7 build with added functionality like search for image or gif seperately and search by clicking on tags of the images.
+<b>EDIT:</b> now that i have the sharing functionality working i am going to start from fresh and do a proper framework7 build with added functionality like search for image or gif seperately and search by clicking on tags of the images.
 
 
 ## features
