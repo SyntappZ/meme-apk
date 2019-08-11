@@ -36,9 +36,11 @@ i tried adding file transfer plugin for cordova but still not working so adding 
  
 ## screens
 
-<div class="wrap">
-   <img scr="https://user-images.githubusercontent.com/42116608/62838541-9f38b500-bc75-11e9-9a53-6535f14d03ae.png">
-   <img scr="https://user-images.githubusercontent.com/42116608/62838542-9f38b500-bc75-11e9-895b-83fbc3b37219.png">
-   <img scr="https://user-images.githubusercontent.com/42116608/62838543-9f38b500-bc75-11e9-9065-7aafabb75385.png">
-   <img scr="https://user-images.githubusercontent.com/42116608/62838544-9f38b500-bc75-11e9-8e28-abf24787445c.png">
-</div>
+   <img scr="https://user-images.githubusercontent.com/42116608/62838641-1cb0f500-bc77-11e9-8733-4a727cc7d241.png" width="200">
+   <img scr="https://user-images.githubusercontent.com/42116608/62838643-1cb0f500-bc77-11e9-9ee2-49fe155132b7.png" width="200">
+   <img scr="https://user-images.githubusercontent.com/42116608/62838644-1cb0f500-bc77-11e9-996e-9ed1e99c8834.png" width="200">
+   <img scr="https://user-images.githubusercontent.com/42116608/62838645-1d498b80-bc77-11e9-8acc-9629ce562f7b.png" width="200">
+
+
+
+
