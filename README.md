@@ -1,5 +1,5 @@
-# image/gif search and share
- android app
+# meme-apk (soon to be search master)
+ an image/gif search and share app for android.
 
 ## making this project
 
