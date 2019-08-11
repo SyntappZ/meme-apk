@@ -1,5 +1,6 @@
 # meme-apk (soon to be share master)
  an image/gif search and share app for android.
+ (test apk in the test-apk folder)
 
 ## making this project
 
