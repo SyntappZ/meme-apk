@@ -13,13 +13,12 @@
       rel="stylesheet"
     />
     <title>Document</title>
-    
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
     />
 
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link
@@ -29,7 +28,6 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>memes</title>
     <style>
-     
       body {
         background-color: #424242;
         color: white;
@@ -172,7 +170,12 @@
                 </div>
 
                 <div class="card-action">
-                  <a :href="url" download>Download</a>
+                  <button
+          tags: [],
+                    onclick="window.plugins.socialsharing.shareViaWhatsApp(null,'https://i.imgur.com/8MsPmgS.jpg',  'https://i.imgur.com/8MsPmgS.jpg', null, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})"
+                  >
+                    whatsapp
+                  </button>
                 </div>
               </div>
             </div>
@@ -181,6 +184,7 @@
       </template>
     </div>
     <script src="js/lazyLoad.js" async=""></script>
+    <script src="cordova.js"></script>
     <script>
       var app = new Vue({
         el: "#app",
@@ -198,7 +202,8 @@
           url: "",
           title: "",
           desciption: "",
-          tags: []
+          tags: [],
+          linkTest: 'https://i.imgur.com/8MsPmgS.jpg'
         },
         mounted() {},
         methods: {
@@ -209,7 +214,6 @@
             this.searchTitle();
             this.tempTitle = [];
 
-           
             this.tempTitle.push(this.input);
             for (let i = 1; i <= 3; i++) {
               axios({
@@ -275,6 +279,7 @@
             this.title = title;
             this.desciption = desc;
             this.tags = tags;
+            console.log(this.url)
           },
           closeImage() {
             this.imageOpen = false;
