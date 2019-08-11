@@ -170,12 +170,7 @@
                 </div>
 
                 <div class="card-action">
-                  <button
-          tags: [],
-                    onclick="window.plugins.socialsharing.shareViaWhatsApp(null,'https://i.imgur.com/8MsPmgS.jpg',  'https://i.imgur.com/8MsPmgS.jpg', null, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})"
-                  >
-                    whatsapp
-                  </button>
+                    <a @click="shareImage" class="waves-effect waves-orange btn-flat">share</a>
                 </div>
               </div>
             </div>
@@ -203,11 +198,32 @@
           title: "",
           desciption: "",
           tags: [],
-          linkTest: 'https://i.imgur.com/8MsPmgS.jpg'
+          linkTest: "https://i.imgur.com/8MsPmgS.jpg"
         },
         mounted() {},
         methods: {
           toTop() {},
+          shareImage() {
+            var options = {
+              files: [this.url]
+            };
+
+            var onSuccess = function(result) {
+              // window.plugins.socialsharing.shareViaWhatsApp(null, url,  null, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})
+              console.log("Share completed? " + result.completed); // On Android apps mostly return false even while it's true
+              console.log("Shared to app: " + result.app); // On Android result.app since plugin version 5.4.0 this is no longer empty. On iOS it's empty when sharing is cancelled (result.completed=false)
+            };
+
+            var onError = function(msg) {
+              console.log("Sharing failed with message: " + msg);
+            };
+
+            window.plugins.socialsharing.shareWithOptions(
+              options,
+              onSuccess,
+              onError
+            );
+          },
           onSearch() {
             this.images = [];
             this.images2 = [];
@@ -279,7 +295,6 @@
             this.title = title;
             this.desciption = desc;
             this.tags = tags;
-            console.log(this.url)
           },
           closeImage() {
             this.imageOpen = false;
